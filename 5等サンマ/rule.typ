@@ -1,19 +1,61 @@
 #set document(title: "5等サンマ セットルール", author: "mahjong-rule")
-#set page(paper: "a4", margin: (x: 18mm, y: 16mm), numbering: "1 / 1")
-#set text(lang: "ja", size: 9pt)
-#set par(justify: true, leading: 0.55em)
+#let ink = rgb("183a3d")
+#let teal = rgb("0f5960")
+#let teal-soft = rgb("e7f1ef")
+#let vermilion = rgb("b84a35")
+#let gold = rgb("c79a42")
+#let paper = rgb("fbf8f0")
+#let muted = rgb("64706e")
+
+#set page(
+  paper: "a4",
+  margin: (top: 13mm, bottom: 13mm, x: 16mm),
+  fill: paper,
+  numbering: "1 / 1",
+  number-align: center,
+)
+#set text(lang: "ja", size: 9.2pt, fill: ink)
+#set par(justify: true, leading: 0.58em)
 #set heading(numbering: "1.")
-#show heading.where(level: 1): set text(size: 15pt, weight: "bold")
-#show heading.where(level: 2): set text(size: 11pt, weight: "bold")
-#show link: set text(fill: rgb("2457a6"))
+#show heading.where(level: 1): it => block(
+  above: 10pt,
+  below: 5pt,
+  fill: teal,
+  inset: (x: 9pt, y: 5pt),
+  radius: 4pt,
+  width: 100%,
+)[#text(fill: white, size: 13pt, weight: "bold")[#it]]
+#show heading.where(level: 2): it => block(
+  above: 9pt,
+  below: 4pt,
+  stroke: (left: 3pt + gold),
+  inset: (left: 7pt, y: 2pt),
+)[#text(fill: teal, size: 10.5pt, weight: "bold")[#it]]
+#show link: set text(fill: teal)
+#show list: set list(marker: [#text(fill: vermilion, weight: "bold")[◆]], indent: 11pt, body-indent: 6pt, spacing: 1.2pt)
 
 #align(center)[
-  #text(size: 21pt, weight: "bold")[5等サンマ セットルール]
+  #text(size: 8pt, tracking: 1.5pt, weight: "bold", fill: vermilion)[THREE PLAYER MAHJONG]
   #v(2pt)
-  #text(size: 9pt, fill: gray)[東風完全順位戦／30符固定・ツモ損なし／冬は鳴き有効]
+  #text(size: 25pt, weight: "bold", fill: teal)[5等サンマ]
+  #v(-1pt)
+  #text(size: 12pt, weight: "bold", fill: ink)[セットルールブック]
+  #v(5pt)
 ]
 
-#block(fill: rgb("f3f5f7"), inset: 8pt, radius: 3pt)[
+#block(clip: true, radius: 7pt, stroke: .7pt + gold)[
+  #image("assets/season-table.png", width: 100%, height: 40mm, fit: "cover")
+]
+
+#v(5pt)
+#align(center)[
+  #box(fill: teal-soft, radius: 10pt, inset: (x: 10pt, y: 4pt))[
+    #text(size: 8.5pt, weight: "bold", fill: teal)[東風完全順位戦　｜　30符固定・ツモ損なし　｜　冬は鳴き有効]
+  ]
+]
+#v(5pt)
+
+#block(fill: rgb("fff5df"), stroke: .7pt + gold, inset: 8pt, radius: 5pt)[
   *この文書を卓上の最終裁定とする。* 記載のない事項は一般的なアリアリ三人麻雀に従い、判断が割れた場合はその局を止めて3人で裁定する。賭博を目的とせず、チップはゲーム内得点として扱う。
 ]
 
@@ -47,8 +89,15 @@
   #table(
     columns: (1.2fr, 1fr, 1.3fr, 1fr, 1.3fr),
     inset: 4pt,
-    stroke: .5pt,
-    table.header([*区分*], [*子ロン*], [*子ツモ*], [*親ロン*], [*親ツモ*]),
+    stroke: .45pt + rgb("8aa3a0"),
+    fill: (_, y) => if calc.even(y) { white } else { teal-soft },
+    table.header(
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[区分]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[子ロン]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[子ツモ]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[親ロン]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[親ツモ]],
+    ),
     [満貫], [8,000], [3,000 / 5,000], [12,000], [6,000オール],
     [跳満], [12,000], [4,000 / 8,000], [18,000], [9,000オール],
     [倍満], [16,000], [6,000 / 10,000], [24,000], [12,000オール],
@@ -59,6 +108,7 @@
 
 #text(size: 8pt, fill: gray)[子ツモ欄は「子の支払 / 親の支払」。端数切り上げのため支払総額がロン点をわずかに上回る場合がある。]
 
+#pagebreak()
 = 抜き牌とドラ
 
 - 北と四季牌は空気扱いの抜き牌。抜いた後は嶺上から補充する。北は1枚につきドラ1・祝儀1枚。
@@ -99,8 +149,16 @@
 
 #align(center)[
   #table(
-    columns: (1.5fr, 1fr, 1fr, 1fr), inset: 5pt, stroke: .5pt,
-    table.header([*2着の状態*], [*1着*], [*2着*], [*3着*]),
+    columns: (1.5fr, 1fr, 1fr, 1fr),
+    inset: 5pt,
+    stroke: .45pt + rgb("8aa3a0"),
+    fill: (_, y) => if calc.even(y) { white } else { teal-soft },
+    table.header(
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[2着の状態]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[1着]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[2着]],
+      table.cell(fill: teal)[#text(fill: white, weight: "bold")[3着]],
+    ),
     [40,000点以上（クビあり）], [+30], [−10], [−20],
     [40,000点未満（クビなし）], [+20], [0], [−20],
   )
