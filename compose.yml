@@ -1,0 +1,28 @@
+x-typst-service: &typst-service
+  build:
+    context: .
+  working_dir: /work
+  volumes:
+    - type: bind
+      source: .
+      target: /work
+
+services:
+  typst-gotou:
+    <<: *typst-service
+    command:
+      - compile
+      - --root
+      - /work
+      - 5等サンマ/rule.typ
+      - 5等サンマ/rule.pdf
+
+  typst-all:
+    <<: *typst-service
+    entrypoint:
+      - /bin/sh
+      - -eu
+      - -c
+    command:
+      - |
+        typst compile --root /work "5等サンマ/rule.typ" "5等サンマ/rule.pdf"
