@@ -6,6 +6,7 @@
 #let gold = rgb("c79a42")
 #let paper = rgb("fbf8f0")
 #let muted = rgb("64706e")
+#let body-leading = 2pt
 
 #set page(
   paper: "a4",
@@ -14,8 +15,13 @@
   numbering: "1 / 1",
   number-align: center,
 )
-#set text(lang: "ja", size: 9.2pt, fill: ink)
-#set par(justify: true, leading: 0.58em)
+#set text(
+  lang: "ja",
+  font: "Noto Sans CJK JP",
+  size: 9.2pt,
+  fill: ink,
+)
+#set par(justify: true, leading: body-leading)
 #set heading(numbering: "1.")
 #show heading.where(level: 1): it => block(
   above: 10pt,
@@ -32,7 +38,12 @@
   inset: (left: 7pt, y: 2pt),
 )[#text(fill: teal, size: 10.5pt, weight: "bold")[#it]]
 #show link: set text(fill: teal)
-#show list: set list(marker: [#text(fill: vermilion, weight: "bold")[◆]], indent: 11pt, body-indent: 6pt, spacing: 1.2pt)
+#show list: set list(
+  marker: [#text(fill: vermilion, weight: "bold")[◆]],
+  indent: 11pt,
+  body-indent: 6pt,
+  spacing: body-leading,
+)
 
 #align(center)[
   #text(size: 8pt, tracking: 1.5pt, weight: "bold", fill: vermilion)[THREE PLAYER MAHJONG]

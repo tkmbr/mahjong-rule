@@ -53,17 +53,51 @@ mahjong-rule/
 typst compile "5等サンマ\rule.typ" "5等サンマ\rule.pdf"
 ```
 
-すべてのルールをまとめてビルドする場合は、PowerShellで次を実行できます。
+### Dockerを使う場合
 
-```powershell
-Get-ChildItem -Directory | ForEach-Object {
-  $source = Join-Path $_.FullName "rule.typ"
-  $output = Join-Path $_.FullName "rule.pdf"
-  if (Test-Path $source) {
-    typst compile $source $output
-  }
-}
+Typstをローカルへインストールしなくても、Docker Composeでビルドできます。Dockerイメージには文書で使用するNoto Sans CJK JPフォントも含まれるため、OSに依存せず同じ書体で出力されます。リポジトリのルートで次を実行すると、初回はビルド用イメージを作成し、すべてのルールをビルドします。
+
+```sh
+docker compose run --rm typst-all
 ```
+
+WSLから実行する場合は、Windows側に置いたこのリポジトリへ移動してから実行します。たとえばリポジトリが`C:\Users\名前\src\mahjong-rule`にある場合、WSL上のパスは通常`/mnt/c/Users/名前/src/mahjong-rule`です。
+
+```sh
+cd /mnt/c/Users/名前/src/mahjong-rule
+docker compose run --rm typst-all
+```
+
+特定のルールだけをビルドする場合は、そのルールのサービスを指定します。
+
+```sh
+docker compose run --rm typst-gotou
+```
+
+リポジトリはコンテナの`/work`へ自動的にマウントされるため、生成された`rule.pdf`はWindows側の同じフォルダへ直接保存されます。パスに空白や日本語が含まれる場合は、Typstファイルのパスを引用符で囲んでください。
+
+新しいルールを追加するときは、`compose.yml`へルール専用サービスを追加します。たとえば`新ルール/rule.typ`を追加した場合は次のように定義します。
+
+```yaml
+services:
+  typst-new-rule:
+    <<: *typst-service
+    command:
+      - |
+        typst compile --root /work "新ルール/rule.typ" "新ルール/rule.pdf"
+```
+
+さらに、`typst-all`の`command`にもコンパイルコマンドを追加します。コマンドは上から順番に実行され、途中で失敗した場合は`-e`オプションにより、その時点で全体ビルドも失敗します。
+
+```yaml
+  typst-all:
+    command:
+      - |
+        typst compile --root /work "5等サンマ/rule.typ" "5等サンマ/rule.pdf"
+        typst compile --root /work "新ルール/rule.typ" "新ルール/rule.pdf"
+```
+
+コンテナは作業ファイルをイメージへコピーせず、Windows側のファイルをバインドマウントして読み書きします。このリポジトリは扱うファイル数が少ないため、WSLのLinuxファイルシステムへ移すことを前提にはしていません。
 
 ## 記載方針
 
@@ -89,4 +123,3 @@ Get-ChildItem -Directory | ForEach-Object {
 - 誤発声、少牌・多牌、チョンボなどの罰則
 - 4人で卓を回す場合の抜け番の扱い
 - 出典URL、閲覧日、セット独自の変更点
-
