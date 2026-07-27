@@ -55,7 +55,7 @@ typst compile "5等サンマ\rule.typ" "5等サンマ\rule.pdf"
 
 ### Dockerを使う場合
 
-Typstをローカルへインストールしなくても、Docker Composeでビルドできます。リポジトリのルートで次を実行すると、初回はビルド用イメージを作成し、すべてのルールをビルドします。
+Typstをローカルへインストールしなくても、Docker Composeでビルドできます。Dockerイメージには文書で使用するNoto Sans CJK JPフォントも含まれるため、OSに依存せず同じ書体で出力されます。リポジトリのルートで次を実行すると、初回はビルド用イメージを作成し、すべてのルールをビルドします。
 
 ```sh
 docker compose run --rm typst-all
@@ -83,21 +83,14 @@ services:
   typst-new-rule:
     <<: *typst-service
     command:
-      - compile
-      - --root
-      - /work
-      - 新ルール/rule.typ
-      - 新ルール/rule.pdf
+      - |
+        typst compile --root /work "新ルール/rule.typ" "新ルール/rule.pdf"
 ```
 
 さらに、`typst-all`の`command`にもコンパイルコマンドを追加します。コマンドは上から順番に実行され、途中で失敗した場合は`-e`オプションにより、その時点で全体ビルドも失敗します。
 
 ```yaml
   typst-all:
-    entrypoint:
-      - /bin/sh
-      - -eu
-      - -c
     command:
       - |
         typst compile --root /work "5等サンマ/rule.typ" "5等サンマ/rule.pdf"
