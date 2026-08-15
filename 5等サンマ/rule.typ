@@ -10,7 +10,7 @@
 
 #set page(
   paper: "a4",
-  margin: (top: 13mm, bottom: 13mm, x: 16mm),
+  margin: (top: 11mm, bottom: 11mm, x: 16mm),
   fill: paper,
   numbering: "1 / 1",
   number-align: center,
@@ -18,22 +18,22 @@
 #set text(
   lang: "ja",
   font: "Noto Sans CJK JP",
-  size: 9.2pt,
+  size: 9pt,
   fill: ink,
 )
 #set par(justify: true, leading: body-leading)
 #set heading(numbering: "1.")
 #show heading.where(level: 1): it => block(
-  above: 10pt,
-  below: 5pt,
+  above: 8pt,
+  below: 4pt,
   fill: teal,
   inset: (x: 9pt, y: 5pt),
   radius: 4pt,
   width: 100%,
 )[#text(fill: white, size: 13pt, weight: "bold")[#it]]
 #show heading.where(level: 2): it => block(
-  above: 9pt,
-  below: 4pt,
+  above: 7pt,
+  below: 3pt,
   stroke: (left: 3pt + gold),
   inset: (left: 7pt, y: 2pt),
 )[#text(fill: teal, size: 10.5pt, weight: "bold")[#it]]
@@ -55,7 +55,7 @@
 ]
 
 #block(clip: true, radius: 7pt, stroke: .7pt + gold)[
-  #image("assets/season-table.png", width: 100%, height: 40mm, fit: "cover")
+  #image("assets/season-table.png", width: 100%, height: 35mm, fit: "cover")
 ]
 
 #v(5pt)
